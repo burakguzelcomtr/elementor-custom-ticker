@@ -1,0 +1,134 @@
+/**
+ * Elementor Custom Ticker CSS
+ */
+
+.elementor-ticker-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding: 10px 0;
+    visibility: hidden; /* Hide initially until JS initializes */
+    display: flex;
+    align-items: center;
+}
+
+.elementor-ticker-items {
+    display: flex;
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    animation: ticker-scroll 20s linear infinite;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Vertical alignment variations */
+.elementor-ticker-wrapper[data-vertical-alignment="flex-start"] .elementor-ticker-items {
+    top: 0;
+    transform: translateY(0);
+}
+
+.elementor-ticker-wrapper[data-vertical-alignment="flex-end"] .elementor-ticker-items {
+    top: 100%;
+    transform: translateY(-100%);
+}
+
+.elementor-ticker-wrapper[data-direction="right"] .elementor-ticker-items {
+    animation-name: ticker-scroll-right;
+}
+
+.elementor-ticker-wrapper[data-pause-on-hover="yes"]:hover .elementor-ticker-items {
+    animation-play-state: paused;
+}
+
+.elementor-ticker-item {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.elementor-ticker-item a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.elementor-ticker-item a:hover {
+    color: #61ce70;
+}
+
+/* Keyframes for center alignment */
+@keyframes ticker-scroll {
+    0% {
+        transform: translate3d(100vw, -50%, 0);
+    }
+    100% {
+        transform: translate3d(-100%, -50%, 0);
+    }
+}
+
+@keyframes ticker-scroll-right {
+    0% {
+        transform: translate3d(-100%, -50%, 0);
+    }
+    100% {
+        transform: translate3d(100vw, -50%, 0);
+    }
+}
+
+/* Keyframes for top alignment */
+.elementor-ticker-wrapper[data-vertical-alignment="flex-start"] .elementor-ticker-items {
+    animation-name: ticker-scroll-top;
+}
+
+.elementor-ticker-wrapper[data-vertical-alignment="flex-start"][data-direction="right"] .elementor-ticker-items {
+    animation-name: ticker-scroll-right-top;
+}
+
+@keyframes ticker-scroll-top {
+    0% {
+        transform: translate3d(100vw, 0, 0);
+    }
+    100% {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes ticker-scroll-right-top {
+    0% {
+        transform: translate3d(-100%, 0, 0);
+    }
+    100% {
+        transform: translate3d(100vw, 0, 0);
+    }
+}
+
+/* Keyframes for bottom alignment */
+.elementor-ticker-wrapper[data-vertical-alignment="flex-end"] .elementor-ticker-items {
+    animation-name: ticker-scroll-bottom;
+}
+
+.elementor-ticker-wrapper[data-vertical-alignment="flex-end"][data-direction="right"] .elementor-ticker-items {
+    animation-name: ticker-scroll-right-bottom;
+}
+
+@keyframes ticker-scroll-bottom {
+    0% {
+        transform: translate3d(100vw, -100%, 0);
+    }
+    100% {
+        transform: translate3d(-100%, -100%, 0);
+    }
+}
+
+@keyframes ticker-scroll-right-bottom {
+    0% {
+        transform: translate3d(-100%, -100%, 0);
+    }
+    100% {
+        transform: translate3d(100vw, -100%, 0);
+    }
+}

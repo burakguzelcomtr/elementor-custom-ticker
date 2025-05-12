@@ -1,0 +1,1 @@
+// sus yoksa inanırım
