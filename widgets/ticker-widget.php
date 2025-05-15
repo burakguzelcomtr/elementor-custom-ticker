@@ -81,6 +81,73 @@ class Elementor_Ticker_Widget extends \Elementor\Widget_Base {
         $repeater = new \Elementor\Repeater();
 
         $repeater->add_control(
+            'show_image',
+            [
+                'label' => esc_html__('Show Image', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Yes', 'elementor-custom-ticker'),
+                'label_off' => esc_html__('No', 'elementor-custom-ticker'),
+                'return_value' => 'yes',
+                'default' => 'no',
+            ]
+        );
+
+        $repeater->add_control(
+            'ticker_image',
+            [
+                'label' => esc_html__('Image', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::MEDIA,
+                'default' => [
+                    'url' => \Elementor\Utils::get_placeholder_image_src(),
+                ],
+                'condition' => [
+                    'show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $repeater->add_responsive_control(
+            'image_size',
+            [
+                'label' => esc_html__('Image Size', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 20,
+                        'max' => 200,
+                        'step' => 1,
+                    ],
+                ],
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 40,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}} .elementor-ticker-image img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [
+                    'show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $repeater->add_control(
+            'image_border_radius',
+            [
+                'label' => esc_html__('Image Border Radius', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}} .elementor-ticker-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+                'condition' => [
+                    'show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $repeater->add_control(
             'ticker_text',
             [
                 'label' => esc_html__('Ticker Text', 'elementor-custom-ticker'),
@@ -101,6 +168,52 @@ class Elementor_Ticker_Widget extends \Elementor\Widget_Base {
                     'url' => '',
                     'is_external' => true,
                     'nofollow' => true,
+                ],
+            ]
+        );
+
+        $repeater->add_control(
+            'item_background_color',
+            [
+                'label' => esc_html__('Item Background Color', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}}' => 'background-color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        $repeater->add_control(
+            'item_text_color',
+            [
+                'label' => esc_html__('Item Text Color', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}}' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        $repeater->add_control(
+            'item_border_radius',
+            [
+                'label' => esc_html__('Item Border Radius', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $repeater->add_responsive_control(
+            'item_padding',
+            [
+                'label' => esc_html__('Item Padding', 'elementor-custom-ticker'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} {{CURRENT_ITEM}}' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -342,17 +455,36 @@ class Elementor_Ticker_Widget extends \Elementor\Widget_Base {
         ?>
         <div <?php echo $this->get_render_attribute_string('wrapper'); ?>>
             <div class="elementor-ticker-items">
-                <?php foreach ($settings['ticker_items'] as $index => $item) : ?>
-                    <div class="elementor-ticker-item">
+                <?php foreach ($settings['ticker_items'] as $index => $item) :
+                    $item_key = $this->get_repeater_setting_key('ticker_item', 'ticker_items', $index);
+                    $this->add_render_attribute($item_key, 'class', [
+                        'elementor-ticker-item',
+                        'elementor-repeater-item-' . $item['_id'],
+                    ]);
+                ?>
+                    <div <?php echo $this->get_render_attribute_string($item_key); ?>>
                         <?php if (!empty($item['ticker_link']['url'])) :
                             $this->add_link_attributes('ticker-link-' . $index, $item['ticker_link']);
-                        ?>
-                            <a <?php echo $this->get_render_attribute_string('ticker-link-' . $index); ?>>
-                                <?php echo esc_html($item['ticker_text']); ?>
-                            </a>
-                        <?php else : ?>
-                            <?php echo esc_html($item['ticker_text']); ?>
+                            $tag_open = '<a ' . $this->get_render_attribute_string('ticker-link-' . $index) . '>';
+                            $tag_close = '</a>';
+                        else :
+                            $tag_open = '';
+                            $tag_close = '';
+                        endif; ?>
+
+                        <?php if (isset($item['show_image']) && $item['show_image'] === 'yes' && !empty($item['ticker_image']['url'])) : ?>
+                            <div class="elementor-ticker-image">
+                                <?php echo $tag_open; ?>
+                                <img src="<?php echo esc_url($item['ticker_image']['url']); ?>" alt="<?php echo esc_attr($item['ticker_text']); ?>">
+                                <?php echo $tag_close; ?>
+                            </div>
                         <?php endif; ?>
+
+                        <div class="elementor-ticker-content">
+                            <?php echo $tag_open; ?>
+                            <?php echo esc_html($item['ticker_text']); ?>
+                            <?php echo $tag_close; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>

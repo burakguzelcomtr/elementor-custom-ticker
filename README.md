@@ -7,6 +7,8 @@ A customizable ticker widget for Elementor that allows you to create smooth scro
 ## Features
 
 - **Repeater-based Content**: Add unlimited ticker items with optional links
+- **Image Support**: Add images to ticker items with customizable size and border radius
+- **Per-Item Styling**: Customize each ticker item with individual background colors, text colors, and border radius
 - **Animation Controls**:
   - Adjustable scrolling speed
   - Direction control (left-to-right or right-to-left)
@@ -53,8 +55,13 @@ A customizable ticker widget for Elementor that allows you to create smooth scro
 ### Content Tab
 
 - **Ticker Items**: Add, remove, or reorder ticker items
+  - Image: Add an optional image with customizable size and border radius
   - Text: The content to display in the ticker
   - Link: Optional URL to make the ticker item clickable
+  - Item Background Color: Set individual background colors for each ticker item
+  - Item Text Color: Set individual text colors for each ticker item
+  - Item Border Radius: Customize the border radius for each ticker item
+  - Item Padding: Adjust the padding for each ticker item
 - **Scroll Speed**: Control how fast the ticker scrolls
 - **Direction**: Choose between left-to-right or right-to-left scrolling
 - **Pause on Hover**: Enable/disable pausing when users hover over the ticker
@@ -75,7 +82,7 @@ A customizable ticker widget for Elementor that allows you to create smooth scro
 
 ### Can I add images to the ticker?
 
-The current version supports text and links only. Image support may be added in future updates.
+Yes! You can add images to each ticker item and customize their size and border radius. This is perfect for creating testimonial tickers or featured customer displays.
 
 ### Does the ticker work with Elementor Free?
 

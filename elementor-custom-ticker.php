@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Elementor Custom Ticker
  * Description: A custom ticker widget for Elementor
- * Version: 1.0.0
+ * Version: 1.0.3
  * Author: Burak Güzel
  * Text Domain: elementor-custom-ticker
  */
@@ -17,17 +17,17 @@ if (!defined('ABSPATH')) {
  *
  * The main class that initiates and runs the plugin.
  *
- * @since 1.0.0
+ * @since 1.0.3
  */
 final class Elementor_Custom_Ticker {
 
     /**
      * Plugin Version
      *
-     * @since 1.0.0
+     * @since 1.0.3
      * @var string The plugin version.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.3';
 
     /**
      * Minimum Elementor Version
